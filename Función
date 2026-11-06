@@ -1,0 +1,34 @@
+PORCENTAJE_ALERTA_CAPACIDAD = 0.90
+
+def registrar_formulario_ventas(nombre_emprendimiento, capacidad, ventas_actuales):
+    nombre_limpio = str(nombre_emprendimiento).strip()
+
+    if not nombre_limpio:
+        print("Error: El nombre del emprendimiento no puede estar vacío.")
+        return False, {}
+
+    if capacidad <= 0:
+        print("Error: La capacidad total debe ser mayor a 0.")
+        return False, {}
+
+    if ventas_actuales < 0:
+        print("Error: Las ventas realizadas no pueden ser negativas.")
+        return False, {}
+
+    if ventas_actuales > capacidad:
+        print(f"Alerta: Las ventas ({ventas_actuales}) superan la capacidad máxima ({capacidad}).")
+
+    porcentaje_ocupacion = round((ventas_actuales / capacidad) * 100, 2)
+    capacidad_restante = max(0, capacidad - ventas_actuales)
+    alerta_limite = ventas_actuales >= (capacidad * PORCENTAJE_ALERTA_CAPACIDAD)
+
+    registro = {
+        "emprendimiento": nombre_limpio,
+        "capacidad_total": capacidad,
+        "ventas_realizadas": ventas_actuales,
+        "capacidad_disponible": capacidad_restante,
+        "porcentaje_ventas": porcentaje_ocupacion,
+        "alerta_limite": alerta_limite
+    }
+
+    return True, registro
